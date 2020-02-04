@@ -11,6 +11,9 @@
 ## shell
 ```
 Linux下校验下载文件的完整性
+wget http://localhost:9999/downloadLastFile
+tar -xf  hyperspace-console-api.tar
 md5sum hyperspace-console-api.jar| grep ` cat -A hyperspace-console-api.jar.MD5 |cut -b 1-32`
 PS: cut -b 1-32 通过文本截取的方式删除换行符
+rm hyperspace-console-api.tar
 ```

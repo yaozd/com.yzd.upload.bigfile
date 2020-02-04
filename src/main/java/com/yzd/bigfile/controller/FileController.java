@@ -80,6 +80,7 @@ public class FileController {
                 fileDownloadUrl=FileUtil.getDownloadFileUrl(DOWNLOAD_URL_PREFIX,fileAbsolutePath);
             }
         }
+        lastFileDownloadUrl=fileDownloadUrl;
         return  ResponseEntity.ok(fileDownloadUrl);
     }
     public static final String DOWNLOAD_URL_PREFIX="/download/";
@@ -120,5 +121,18 @@ public class FileController {
             }
         }
         return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 下载最新上传的文件
+     *
+     */
+    private String lastFileDownloadUrl;
+    @GetMapping("/downloadLastFile")
+    public void downloadLastFile(HttpServletResponse response) throws IOException {
+        if(lastFileDownloadUrl==null){
+            throw new ServiceException(ExceptionEnum.FILE_NOT_EXIST);
+        }
+        response.sendRedirect(lastFileDownloadUrl);
     }
 }
