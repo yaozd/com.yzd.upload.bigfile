@@ -1,6 +1,7 @@
 package com.yzd.bigfile.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.connector.ClientAbortException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -36,7 +37,10 @@ public class BasicExceptionHandler {
         return ResponseEntity.status(e.getExceptionEnum().value())
                 .body(new ExceptionResult(e.getExceptionEnum()));
     }
-
+    @ExceptionHandler(ClientAbortException.class)
+    public void handleClientAbortException(ServiceException e) {
+        log.warn("客户端关闭连接：{}",e);
+    }
 
     /**
      * 业务处理未知异常
