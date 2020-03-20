@@ -47,6 +47,7 @@
         <div id="picker">选择文件</div>
         <button id="ctlBtn" class="btn btn-default">开始上传</button>
         <button id="downloadBtn" class="btn btn-default" style="display: none">下载文件</button>
+        <button id="copyBtn" class="btn btn-default" style="display: none">点击复制链接</button>
     </div>
     <p>
         <span>上传所用时间:</span>
@@ -67,6 +68,7 @@
     var $list = $("#thelist");
     var $btn = $("#ctlBtn");
     var $downloadBtn = $("#downloadBtn");
+    var $copyBtn = $("#copyBtn");
     var $downloadTxt = $("#downloadTxt");
     var state = 'pending'; // 上传文件初始化
     var timer;
@@ -103,6 +105,7 @@
         uploader.options.formData.guid = guid;
         fileArray.push(paramOb);
         $downloadBtn.hide();
+        $copyBtn.hide();
         $downloadTxt.text('');
     });
 
@@ -146,6 +149,7 @@
         $.get("/merge", {"guid": successDuid,"fileName":file.name}, function (data, status) {
             fileDownloadUrl=data;
             $downloadBtn.show();
+            $copyBtn.show();
             $downloadTxt.text(data);
             layer.msg("合并完成");
         });
@@ -180,6 +184,14 @@
             return;
         }
         window.location.href=fileDownloadUrl;
+    });
+    $copyBtn.on('click', function () {
+        if(fileDownloadUrl==''){
+            alert("暂时没有要下载的数据【fileDownloadUrl==''】")
+            return;
+        }
+        let fullDownloadUrl=window.location.origin+fileDownloadUrl;
+        alert(fullDownloadUrl);
     });
 
 
